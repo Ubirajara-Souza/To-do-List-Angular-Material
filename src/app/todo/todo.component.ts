@@ -1,9 +1,8 @@
+import { TaskService } from './../service/task.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TaskModel } from '../model/taskModel';
-
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-todo',
@@ -16,12 +15,17 @@ export class TodoComponent implements OnInit {
   tasks: TaskModel[] = [];
   inProgress: TaskModel[] = [];
   done: TaskModel[] = [];
-  updateId!: any;
+  updateId!: number;
   isEditEnabled: boolean = false;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private tasksService: TaskService,
+    private fb: FormBuilder,
+  ) { }
 
   ngOnInit(): void {
+   this.getTask();
+
     this.todoForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
@@ -29,42 +33,70 @@ export class TodoComponent implements OnInit {
     });
   }
 
+  getTask() {
+    this.tasksService.getTask().subscribe({
+      next: (res) => {
+        this.tasks = res;
+      },
+      error:() => {
+        alert("Erro ao listas as Tarefas")
+      }
+    })
+  }
+
   addTask() {
-    let dateFormat = this.todoForm.value.dateCompletion;
-
-    this.tasks.push({
-      title: this.todoForm.value.title,
-      description: this.todoForm.value.description,
-      dateCompletion: moment(dateFormat).format('DD-MM-YYYY'),
-      done: false
-    });
-    this.todoForm.reset();
+    if (this.todoForm.valid) {
+      this.tasksService.addTask(this.todoForm.value).subscribe({
+        next: (res) => {
+          alert("Tarefa adicionada com sucesso")
+          this.todoForm.reset();
+          this.getTask();
+        },
+        error:() => {
+          alert("Erro ao adicionada a tarefa")
+        }
+      })
+    }
   }
 
-  deleteTask(i: number) {
-    this.tasks.slice(i, 1)
+  deleteTask(id: number) {
+    this.tasksService.deleteTask(id).subscribe({
+      next: (res) => {
+        alert("Tarefa excluída com sucesso")
+        this.getTask();
+      },
+      error:() => {
+        alert("Erro ao excluír a tarefa")
+      }
+    })
   }
 
-  editTask(task: TaskModel, i: number) {
+  editTask(task: TaskModel, id: number) {
     this.todoForm.controls['title'].setValue(task.title);
     this.todoForm.controls['description'].setValue(task.description);
     this.todoForm.controls['dateCompletion'].setValue(task.dateCompletion);
-    this.updateId = i;
+    this.updateId = id;
     this.isEditEnabled = true;
   }
 
   updateTask() {
-    this.tasks[this.updateId].title = this.todoForm.value.title;
-    this.tasks[this.updateId].description = this.todoForm.value.description;
-    this.tasks[this.updateId].dateCompletion = this.todoForm.value.dateCompletion;
-    this.tasks[this.updateId].done = false;
+    this.tasksService.editTask(this.todoForm.value, this.updateId).subscribe({
+      next: (res) => {
+        console.log(res);
+        alert("Tarefa alterada com sucesso")
+        this.getTask();
+      },
+      error:() => {
+        alert("Erro ao alterar a tarefa")
+      }
+    })
 
     this.todoForm.reset();
-    this.updateId = undefined;
+    this.updateId = 0;
     this.isEditEnabled = false;
   }
 
-  listTask(event: CdkDragDrop<TaskModel[]>) {
+  drop(event: CdkDragDrop<TaskModel[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -76,4 +108,5 @@ export class TodoComponent implements OnInit {
       );
     }
   }
+
 }

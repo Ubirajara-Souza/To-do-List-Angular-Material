@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -21,7 +22,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
   declarations: [
     AppComponent,
     NavbarComponent,
-    TodoComponent,
+    TodoComponent
 
   ],
   imports: [
@@ -29,6 +30,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     AppRoutingModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
+    HttpClientModule,
     MatToolbarModule,
     MatCardModule,
     MatFormFieldModule,
