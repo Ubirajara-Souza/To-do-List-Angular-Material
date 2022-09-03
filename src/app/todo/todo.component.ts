@@ -3,6 +3,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TaskModel } from '../model/taskModel';
+import { CategoryModel } from '../model/CategoryModel';
 
 @Component({
   selector: 'app-todo',
@@ -13,7 +14,9 @@ export class TodoComponent implements OnInit {
 
   todoForm!: FormGroup;
   tasks: TaskModel[] = [];
-  inProgress: TaskModel[] = [];
+  tasksDifficult: TaskModel[] = [];
+  tasksUrgent: TaskModel[] = [];
+  tasksPriority: TaskModel[] = [];
   done: TaskModel[] = [];
   updateId!: number;
   isEditEnabled: boolean = false;
@@ -29,7 +32,8 @@ export class TodoComponent implements OnInit {
     this.todoForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
-      dateCompletion: ['', Validators.required]
+      dateCompletion: ['', Validators.required],
+      category: ['', Validators.required]
     });
   }
 
@@ -37,6 +41,9 @@ export class TodoComponent implements OnInit {
     this.tasksService.getTask().subscribe({
       next: (res) => {
         this.tasks = res;
+        this.tasksDifficult = res;
+        this.tasksUrgent = res;
+        this.tasksPriority = res;
       },
       error:() => {
         alert("Erro ao listas as Tarefas")
@@ -74,7 +81,7 @@ export class TodoComponent implements OnInit {
   editTask(task: TaskModel, id: number) {
     this.todoForm.controls['title'].setValue(task.title);
     this.todoForm.controls['description'].setValue(task.description);
-    this.todoForm.controls['dateCompletion'].setValue(task.dateCompletion);
+    this.todoForm.controls['category'].setValue(task.category);
     this.updateId = id;
     this.isEditEnabled = true;
   }
@@ -82,7 +89,6 @@ export class TodoComponent implements OnInit {
   updateTask() {
     this.tasksService.editTask(this.todoForm.value, this.updateId).subscribe({
       next: (res) => {
-        console.log(res);
         alert("Tarefa alterada com sucesso")
         this.getTask();
       },
@@ -108,5 +114,12 @@ export class TodoComponent implements OnInit {
       );
     }
   }
+
+  categories: CategoryModel[] = [
+    {value: 1, viewValue: 'Easy'},
+    {value: 2, viewValue: 'Difficult'},
+    {value: 3, viewValue: 'Urgent'},
+    {value: 4, viewValue: 'Priority'},
+  ];
 
 }

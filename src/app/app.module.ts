@@ -16,13 +16,15 @@ import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {DragDropModule} from '@angular/cdk/drag-drop';
-
+import {MatSelectModule} from '@angular/material/select';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    TodoComponent
+    TodoComponent,
+    RegisterComponent
 
   ],
   imports: [
@@ -37,7 +39,9 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     MatInputModule,
     MatIconModule,
     MatButtonModule,
-    DragDropModule
+    DragDropModule,
+    MatSelectModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]

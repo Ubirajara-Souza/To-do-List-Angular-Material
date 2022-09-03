@@ -1,15 +1,17 @@
 {
   "tasks": [
     {
-      "title": "teste ",
-      "description": "teste ",
+      "title": "teste 2",
+      "description": "teste 2",
       "dateCompletion": "08-09-2022",
+      "category": 3,
       "id": 2
     },
     {
-      "title": "teste3",
-      "description": "teste3",
-      "dateCompletion": "09-09-2022",
+      "title": "teste 3",
+      "description": "teste 3",
+      "dateCompletion": "08-09-2022",
+      "category": 4,
       "id": 3
     }
   ]
