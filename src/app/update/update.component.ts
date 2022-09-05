@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CategoryModel } from 'src/app/model/CategoryModel';
 import { TaskModel } from 'src/app/model/taskModel';
 import { TaskService } from 'src/app/service/task.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-update',
@@ -14,16 +14,15 @@ export class UpdateComponent implements OnInit {
 
   todoForm!: FormGroup;
   tasks: TaskModel[] = [];
-  updateId: number = 0;
 
   constructor(
     private tasksService: TaskService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
-
     this.todoForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
@@ -32,12 +31,10 @@ export class UpdateComponent implements OnInit {
     });
   }
 
-  editTask(id: number) {
-    this.updateId = id;
-  }
-
   updateTask() {
-    this.tasksService.editTask(this.todoForm.value, this.updateId).subscribe({
+    let id = +this.route.snapshot.params['id'];
+
+    this.tasksService.editTask(this.todoForm.value, id).subscribe({
       next: (res) => {
         alert("Tarefa alterada com sucesso")
         this.router.navigate([""]);
@@ -46,7 +43,6 @@ export class UpdateComponent implements OnInit {
         alert("Erro ao alterar a tarefa")
       }
     })
-    this.updateId = 0;
   }
 
   categories: CategoryModel[] = [

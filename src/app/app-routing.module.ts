@@ -12,7 +12,7 @@ export const routes: Routes = [
     path: 'task', component: RegisterComponent
   },
   {
-    path: 'task/update/', component: UpdateComponent
+    path: 'task/update/:id', component: UpdateComponent
   }
 ];
 

@@ -2,8 +2,6 @@ import { TaskService } from './../service/task.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { TaskModel } from '../model/taskModel';
-import { Router } from '@angular/router';
-import { UpdateComponent } from '../update/update.component';
 
 @Component({
   selector: 'app-todo',
@@ -20,8 +18,6 @@ export class TodoComponent implements OnInit {
 
   constructor(
     private tasksService: TaskService,
-    private router: Router,
-    private register: UpdateComponent
   ) { }
 
   ngOnInit(): void {
@@ -54,11 +50,6 @@ export class TodoComponent implements OnInit {
     })
   }
 
- editTask(id: number) {
-    this.router.navigate(["/task/update/"]);
-    this.register.editTask(id);
-  }
-
   drop(event: CdkDragDrop<TaskModel[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -71,5 +62,4 @@ export class TodoComponent implements OnInit {
       );
     }
   }
-
 }

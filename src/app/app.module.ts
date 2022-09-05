@@ -44,7 +44,7 @@ import {UpdateComponent } from './update/update.component';
     DragDropModule,
     MatSelectModule
   ],
-  providers: [UpdateComponent],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
