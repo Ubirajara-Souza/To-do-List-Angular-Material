@@ -1,16 +1,8 @@
-.task {
-  background: #303030;
-  height: 93vh;
-}
-
-:host .mat-form-field {
-  width: 100%;
-}
-
 .container {
-  width: 550px;
+  width: 600px;
   max-width: 100%;
   margin: 0 25px 25px 0;
+  margin-left: 35px;
   display: inline-block;
   vertical-align: top;
 }
@@ -70,13 +62,15 @@
 
 .head-title {
   margin: 0;
+  margin-top: 10px;
   padding: 10px;
   background-color: rgb(228, 222, 222);
   border-radius: 4px;
   color: #777272;
   font-size: 1.5rem;
   font-weight: 600;
+}
 
-  font-weight: normal;
-
+.link {
+  margin-left: 50px;
 }

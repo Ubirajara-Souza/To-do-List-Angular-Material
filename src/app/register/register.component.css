@@ -1,4 +1,28 @@
 .task {
   background: #303030;
-  height: 93vh;
+  align-items: center;
+  height: 100vh;
+  display: flex;
 }
+
+:host .mat-form-field {
+  width: 100%;
+}
+
+.title {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.card {
+  margin-top: -100px;
+}
+
+.link {
+  margin-left: 10px;
+}
+
+.button {
+  margin-left: 10px;
+}
+
