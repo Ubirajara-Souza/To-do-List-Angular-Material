@@ -1,9 +1,9 @@
 import { TaskService } from './../service/task.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TaskModel } from '../model/taskModel';
-import { CategoryModel } from '../model/CategoryModel';
+import { Router } from '@angular/router';
+import { UpdateComponent } from '../update/update.component';
 
 @Component({
   selector: 'app-todo',
@@ -12,29 +12,20 @@ import { CategoryModel } from '../model/CategoryModel';
 })
 export class TodoComponent implements OnInit {
 
-  todoForm!: FormGroup;
   tasks: TaskModel[] = [];
   tasksDifficult: TaskModel[] = [];
   tasksUrgent: TaskModel[] = [];
   tasksPriority: TaskModel[] = [];
   done: TaskModel[] = [];
-  updateId!: number;
-  isEditEnabled: boolean = false;
 
   constructor(
     private tasksService: TaskService,
-    private fb: FormBuilder,
+    private router: Router,
+    private register: UpdateComponent
   ) { }
 
   ngOnInit(): void {
    this.getTask();
-
-    this.todoForm = this.fb.group({
-      title: ['', Validators.required],
-      description: ['', Validators.required],
-      dateCompletion: ['', Validators.required],
-      category: ['', Validators.required]
-    });
   }
 
   getTask() {
@@ -51,21 +42,6 @@ export class TodoComponent implements OnInit {
     })
   }
 
-  addTask() {
-    if (this.todoForm.valid) {
-      this.tasksService.addTask(this.todoForm.value).subscribe({
-        next: (res) => {
-          alert("Tarefa adicionada com sucesso")
-          this.todoForm.reset();
-          this.getTask();
-        },
-        error:() => {
-          alert("Erro ao adicionada a tarefa")
-        }
-      })
-    }
-  }
-
   deleteTask(id: number) {
     this.tasksService.deleteTask(id).subscribe({
       next: (res) => {
@@ -78,28 +54,9 @@ export class TodoComponent implements OnInit {
     })
   }
 
-  editTask(task: TaskModel, id: number) {
-    this.todoForm.controls['title'].setValue(task.title);
-    this.todoForm.controls['description'].setValue(task.description);
-    this.todoForm.controls['category'].setValue(task.category);
-    this.updateId = id;
-    this.isEditEnabled = true;
-  }
-
-  updateTask() {
-    this.tasksService.editTask(this.todoForm.value, this.updateId).subscribe({
-      next: (res) => {
-        alert("Tarefa alterada com sucesso")
-        this.getTask();
-      },
-      error:() => {
-        alert("Erro ao alterar a tarefa")
-      }
-    })
-
-    this.todoForm.reset();
-    this.updateId = 0;
-    this.isEditEnabled = false;
+ editTask(id: number) {
+    this.router.navigate(["/task/update/"]);
+    this.register.editTask(id);
   }
 
   drop(event: CdkDragDrop<TaskModel[]>) {
@@ -114,12 +71,5 @@ export class TodoComponent implements OnInit {
       );
     }
   }
-
-  categories: CategoryModel[] = [
-    {value: 1, viewValue: 'Easy'},
-    {value: 2, viewValue: 'Difficult'},
-    {value: 3, viewValue: 'Urgent'},
-    {value: 4, viewValue: 'Priority'},
-  ];
 
 }

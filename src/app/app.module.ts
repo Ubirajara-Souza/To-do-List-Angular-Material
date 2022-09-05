@@ -17,14 +17,16 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MatSelectModule} from '@angular/material/select';
-import { RegisterComponent } from './register/register.component';
+import {RegisterComponent } from './register/register.component';
+import {UpdateComponent } from './update/update.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     TodoComponent,
-    RegisterComponent
+    RegisterComponent,
+    UpdateComponent
 
   ],
   imports: [
@@ -41,9 +43,8 @@ import { RegisterComponent } from './register/register.component';
     MatButtonModule,
     DragDropModule,
     MatSelectModule
-
   ],
-  providers: [],
+  providers: [UpdateComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

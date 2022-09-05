@@ -6,23 +6,24 @@ import { TaskService } from 'src/app/service/task.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  selector: 'app-update',
+  templateUrl: './update.component.html',
+  styleUrls: ['./update.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class UpdateComponent implements OnInit {
 
   todoForm!: FormGroup;
   tasks: TaskModel[] = [];
-  updateId!: number;
+  updateId: number = 0;
 
   constructor(
     private tasksService: TaskService,
     private fb: FormBuilder,
     private router: Router
-    ) { }
+  ) { }
 
   ngOnInit(): void {
+
     this.todoForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
@@ -31,25 +32,27 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  addTask() {
-    if (this.todoForm.valid) {
-      this.tasksService.addTask(this.todoForm.value).subscribe({
-        next: (res) => {
-          alert("Tarefa adicionada com sucesso")
-          this.router.navigate([""]);
-        },
-        error:() => {
-          alert("Erro ao adicionada a tarefa")
-        }
-      })
-    }
+  editTask(id: number) {
+    this.updateId = id;
+  }
+
+  updateTask() {
+    this.tasksService.editTask(this.todoForm.value, this.updateId).subscribe({
+      next: (res) => {
+        alert("Tarefa alterada com sucesso")
+        this.router.navigate([""]);
+      },
+      error: () => {
+        alert("Erro ao alterar a tarefa")
+      }
+    })
+    this.updateId = 0;
   }
 
   categories: CategoryModel[] = [
-    {value: 1, viewValue: 'Easy'},
-    {value: 2, viewValue: 'Difficult'},
-    {value: 3, viewValue: 'Urgent'},
-    {value: 4, viewValue: 'Priority'},
+    { value: 1, viewValue: 'Easy' },
+    { value: 2, viewValue: 'Difficult' },
+    { value: 3, viewValue: 'Urgent' },
+    { value: 4, viewValue: 'Priority' },
   ];
-
 }

@@ -1,7 +1,8 @@
 import { RegisterComponent } from './register/register.component';
 import { TodoComponent } from './todo/todo.component';
-import { NgModule, Component } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { UpdateComponent } from './update/update.component';
 
 export const routes: Routes = [
   {
@@ -9,6 +10,9 @@ export const routes: Routes = [
   },
   {
     path: 'task', component: RegisterComponent
+  },
+  {
+    path: 'task/update/', component: UpdateComponent
   }
 ];
 
